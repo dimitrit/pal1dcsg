@@ -1,0 +1,19 @@
+ref,qty,val,component
+{C1,C4,C6-C12},9,0.1uF,Unpolarized capacitor
+C2,1,10uF,Polarized capacitor
+{C3, C5},2,220uF,Polarized capacitor
+J1,1,,{Connector, double row, 02x20}
+J2,1,,{Audio Jack, 3.5mm}
+JP1,1,,{Jumper, 3-pole, pins 1+2 closed/bridged}
+R1,1,2K2,Resistor
+{R2 - R5},4,10K,Resistor
+RV1,1,10K,Potentiometer
+U1,1,SN76489,Digital Complex Sound Generator
+{U2, U4},2,74LS30,8-input NAND
+U3,1,74LS02,Quad 2-input NOR gate
+U5,1,74LS373,{8-bit Latch, 3-state outputs}
+U6,1,74LS04,Hex Inverter
+U7,1,74LS74,{Dual D Flip-flop, Set \& Reset}
+U8,1,LM386,Low Voltage Audio Power Amplifier
+Y1,1,4.0Mhz,Two pin crystal
+PCB,1,,{PAL-1 Digital Complex Sound Generator PCB}
