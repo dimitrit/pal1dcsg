@@ -1,0 +1,151 @@
+;		**** CHUCKIE EGG ****
+;
+; Plays Chuckie Egg life lost sound.
+;
+; Note that in addition to the PAL-1 Digital Complex Sound Generator card,
+; this example requires the RIOT expansion module.
+;
+
+sndio 		= $16ee			; SN76489 i/o address
+clk1kt		= $1707			; RIOT timer @ 1024T increments
+
+multiplier	= #10
+
+		* = $60
+
+soundptr	.word	chuckiedata	; pointer to sound data
+duration	.word	0		; duration of a sound
+
+		* = $200
+
+		cld			; binary mode
+		ldy #0			; initialise pointer
+		
+next		lda (soundptr),y	; load duration data
+		sta duration
+		bne calc		; not zero, so calculate duration		
+		sta duration+1		; clear sound duration
+		beq cmd			; skip calculation
+calc		lda multiplier		; load multiplier
+		sta duration+1
+		jsr mul8		; calculate sound duration
+cmd		iny
+		lda (soundptr),y	; load command
+		beq endloop		; done playing if command is 0
+		jsr sendbyte
+		iny
+		jmp next		; get next	
+	
+endloop		brk			; and done!
+
+mul8		lda #0			; 8-bit multiply
+		ldx #8			; factors in duration and duration+1
+		lsr duration
+loop		bcc noadd
+		clc
+		adc duration+1
+noadd		ror
+		ror duration
+		dex
+		bne loop
+		sta duration+1		; done; high result in duration+1
+		rts			; low result in duration
+
+sendbyte	sta sndio		; send value of A to SN76489	
+		lda duration		; and delay for 'duration' ms
+		beq delaynext		; nothing to wait for
+delayloop	sta clk1kt		; wait A milliseconds
+delay		bit clk1kt
+		bpl delay		; not done waiting yet	 
+delaynext	dec duration+1		; done delaying?
+		bmi delaydone		; yes. all done
+		lda #255		; no, wait another 255ms
+		bne delayloop
+delaydone	rts
+
+		* = $400
+; Original sound data retrieved 2022/08/19 from: 
+; http://danceswithferrets.org/geekblog/wp-content/uploads/2014/01/sn76489_test.txt
+; Frequencies adjusted for 2Mhz clock
+chuckiedata	; Silence all channels
+		.byte	0, $9f, 0, $bf	; C0,C1 vol 0
+		.byte	0, $df, 0, $ff	; C1,C4 vol 0 
+		; Chuckie sound data
+		.byte	0, $8a, 0, $13	; C0 tone $13a
+		.byte	0, $90		; C0 vol 15
+		.byte	5, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	4, $93		; C0 vol 12
+		.byte	6, $87, 0, $11	; C0 tone $117
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	2, $8a, 0, $13	; C0 tone $13a
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	4, $93		; C0 vol 12
+		.byte	8, $81, 0, $60	; C0 tone $160
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	2, $85, 0, $17	; C0 tone $175
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	4, $93		; C0 vol 12
+		.byte	8, $86, 0, $1d	; C0 tone $1d6
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	2, $82, 0, $1a	; C0 tone $1a2
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	4, $93		; C0 vol 12
+		.byte	8, $82, 0, $1f	; C0 tone $1f2
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	2, $86, 0, $1d	; C0 tone $1d6
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	4, $92		; C0 vol 13
+		.byte	4, $93		; C0 vol 12
+		.byte	48, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	1, $82, 0, $1a	; C0 tone $1a2
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	1, $85, 0, $17	; C0 tone $175
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	1, $80, 0, $16	; C0 tone $160
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	1, $8a, 0, $13	; C0 tone $13a
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	1, $89, 0, $f 	; C0 tone $0f9
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	1, $8b, 0, $e	; C0 tone $0eb
+		.byte	0, $90		; C0 vol 15
+		.byte	4, $91		; C0 vol 14
+		.byte	2, $92		; C0 vol 13
+		.byte	2, $93		; C0 vol 12
+		.byte	2, $94		; C0 vol 11
+		.byte	2, $95		; C0 vol 10
+		.byte	2, $96		; C0 vol 9
+		.byte	2, $97		; C0 vol 8
+		.byte	2, $98		; C0 vol 7
+		.byte	2, $99		; C0 vol 6
+		.byte	2, $9a		; C0 vol 5
+		.byte	2, $9b		; C0 vol 4
+		.byte	2, $9c		; C0 vol 3
+		.byte	2, $9d		; C0 vol 2
+		.byte	2, $9e		; C0 vol 1
+		.byte	2, $9f		; C0 vol 0
+		.byte	0,0		; Done!
+
+		.end

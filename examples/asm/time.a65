@@ -1,0 +1,66 @@
+;		**** GREENWICH TIME SIGNAL ****
+;
+; Plays the BBC radio hourly Greenwich time signal pips.
+;
+; Note that in addition to the PAL-1 Digital Complex Sound Generator card,
+; this example requires the RIOT expansion module.
+;
+
+sndio 		= $16ee			; SN76489 i/o address
+clk1kt		= $1707			; RIOT timer @ 1024T increments
+
+delayms		.macro			; delay n ms
+		lda >(\1)
+		sta duration
+		lda <(\1)
+		jsr delay
+		.endm
+
+soundcmd	.macro			; process SN76489 instruction 
+		lda \1			; 2T
+		jsr sendbyte		; 6T
+		.endm
+
+		* = $60
+duration	.byte	0		; delay duration
+
+		* = $200
+
+		jsr silenceall		; silence everything
+		ldx #5			; play 5 pips
+
+		soundcmd #143		; set tone 1 to 1KHz
+		soundcmd #3
+pip		soundcmd #149		; set tone 1 attenuation to 10dB
+		delayms #100		; play pip for 100ms
+		soundcmd #159		; silence tone 1
+
+		delayms #900		; wait 900ms
+		dex
+		bne pip			; done playing pips?
+
+		soundcmd #149		; play final pip for 500ms
+		delayms #500		; wait 500ms
+		soundcmd #159		; silence tone 1
+
+		brk			; and done!
+
+silenceall	soundcmd #159		; silence tones 1-3
+		soundcmd #191
+		soundcmd #223
+		soundcmd #255		; and noise source
+		rts
+
+sendbyte	sta sndio		; (2T + 6T) + 3T send byte to SN76489
+		rts			; 6T (17us in total incl. lda/jsr)
+
+delay		sta clk1kt		; wait A milliseconds
+delayloop	bit clk1kt
+		bpl delayloop		; RIOT timer not done
+delaynext	dec duration		; ms wait remaining?
+		bmi senddone		; no, all done
+		lda #255		; yes, wait another 255ms
+		bne delay		; and loop again
+senddone	rts
+
+		.end
