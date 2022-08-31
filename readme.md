@@ -1,5 +1,7 @@
 # PAL-1 Digital Complex Sound Generator
 
+## Introduction
+
 The PAL-1 Digital Complex Sound Generator is an expansion board for the PAL-1
 system<sup>1</sup>, based on the Texas Instruments SN76489 digital complex 
 sound generator<sup>2</sup> and was inspired by a Circuit Cellar project<sup>3
@@ -9,8 +11,12 @@ The SN76489 DCSG provides three programmable tone generators and one noise
 generator. Each tone generator has a frequency synthesis and attenuation 
 section. The noise generator supports a noise source and attenuator. The three 
 tone generators and the noise source are mixed and passed to an output buffer. 
-As the SN76489 output pin drives a maximum of 10mA, the board includes a 
+As the SN76489 output pin drives a maximum of 10mA, the circuit includes a 
 simple amplifier circuit to allow a speaker to be connected.
+
+## Acknowledgements
+
+PAL-1 and the PAL-1 logo used with kind permission of Liu Ganning.
 
 ## References
 1. Liu Ganning, ‘PAL-1 Microcomputer User Manual’, 2020 <http://pal.aibs.ws/assets/PAL_en.pdf> [accessed 21 July 2022].
