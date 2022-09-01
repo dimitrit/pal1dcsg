@@ -63,7 +63,7 @@ delaynext	dec duration+1		; done delaying?
 		bne delayloop
 delaydone	rts
 
-		* = $400
+		.align $100
 ; Original sound data retrieved 2022/08/19 from: 
 ; http://danceswithferrets.org/geekblog/wp-content/uploads/2014/01/sn76489_test.txt
 ; Frequencies adjusted for 2Mhz clock
