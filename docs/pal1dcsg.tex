@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage[table]{xcolor}
 \usepackage[flushleft]{threeparttable}
+\usepackage{makecell}
 \usepackage[super]{nth}
 \usepackage[most]{tcolorbox}
 \usepackage{listings}
@@ -14,6 +15,7 @@
 \usepackage{titlesec}
 \usepackage{hyperref}
 %\usepackage{inconsolata}
+\usepackage{tikz}
 \lstset{aboveskip=18pt,belowskip=18pt}
 \tcbset{colframe=blue!50!black,colback=blue!20}
 \hypersetup{
@@ -34,6 +36,9 @@
 \newcommand\mainmatter{
   \cleardoublepage
   \pagenumbering{arabic}}
+\newcommand\encircle[1]{%
+  \tikz[baseline=(X.base)] 
+    \node (X) [draw, shape=circle, inner sep=0] {\strut #1};}
 \title{PAL-1 Digital Complex Sound Generator}
 \author{Plastic Objects Limited}
 \date{}
@@ -449,49 +454,31 @@ The following BASIC statements may be used to silence all channels:
 \end{lstlisting}
 
 \clearpage
-Alternatively, to silence all channels using the PAL-1 keyboard:
+Alternatively, to silence all channels using the KIM monitor:
 
 \begin{table}[h!]
 	\centering
 	\renewcommand{\arraystretch}{1.4}
-	\begin{tabular}{@{\extracolsep{32pt}}lc@{}}
-		\emph{Press keys} & \emph{Display shows} \vspace{4pt} \\ 
-		\framebox[20pt][c]{AD} 
-		\framebox[20pt][c]{1} 
-		\framebox[20pt][c]{6} 
-          	\framebox[20pt][c]{E} 
-		\framebox[20pt][c]{E} & \tt{16EE xx} \\
-		\framebox[20pt][c]{DA} \makebox[20pt]{}
-		\framebox[20pt][c]{9} 
-		\framebox[20pt][c]{F} & \tt{16EE 9F} \\
-		\framebox[20pt][c]{+} & \tt{16EF xx} \\
-		\framebox[20pt][c]{AD} 
-		\framebox[20pt][c]{1} 
-		\framebox[20pt][c]{6} 
-          	\framebox[20pt][c]{E} 
-		\framebox[20pt][c]{E} & \tt{16EE xx} \\
-		\framebox[20pt][c]{DA} \makebox[20pt]{} 
-		\framebox[20pt][c]{B} 
-		\framebox[20pt][c]{F} & \tt{16EE BF} \\
-		\framebox[20pt][c]{+} & \tt{16EF xx} \\
-		\framebox[20pt][c]{AD} 
-		\framebox[20pt][c]{1} 
-		\framebox[20pt][c]{6} 
-          	\framebox[20pt][c]{E} 
-		\framebox[20pt][c]{E} & \tt{16EE xx} \\
-		\framebox[20pt][c]{DA} \makebox[20pt]{} 
-		\framebox[20pt][c]{D} 
-		\framebox[20pt][c]{F} & \tt{16EE DF} \\
-		\framebox[20pt][c]{+} & \tt{16EF xx} \\
-		\framebox[20pt][c]{AD} 
-		\framebox[20pt][c]{1} 
-		\framebox[20pt][c]{6} 
-          	\framebox[20pt][c]{E} 
-		\framebox[20pt][c]{E} & \tt{16EE xx} \\
-		\framebox[20pt][c]{DA} \makebox[20pt]{} 
-		\framebox[20pt][c]{F} 
-		\framebox[20pt][c]{F} & \tt{16EE FF} \\
-		\framebox[20pt][c]{+} & \tt{16EF xx} \\
+	\begin{tabular}{@{\extracolsep{32pt}}ll@{}}
+		\emph{Press keys} & \emph{See printed} \vspace{4pt} \\ 
+				\encircle{\makecell{\footnotesize{RUB}\\\footnotesize{OUT}}}
+		  & \makecell[l]{\tt{KIM}\\\tt{xxxx xx}} \\
+		\encircle{1} \encircle{6} \encircle{E} \encircle{E} & \tt{~~~~~~~~16EE} \\
+		\framebox[40pt][c]{SPACE} & \tt{16EE 00} \\
+		\encircle{9} \encircle{F} \encircle{.} & \tt{~~~~~~~~9F.} \\
+		& \tt{16EF xx} \\
+		\encircle{1} \encircle{6} \encircle{E} \encircle{E} & \tt{~~~~~~~~16EE} \\
+		\framebox[40pt][c]{SPACE} & \tt{16EE 00} \\
+		\encircle{B} \encircle{F} \encircle{.} & \tt{~~~~~~~~BF.} \\
+		& \tt{16EF xx} \\
+		\encircle{1} \encircle{6} \encircle{E} \encircle{E} & \tt{~~~~~~~~16EE} \\
+		\framebox[40pt][c]{SPACE} & \tt{16EE 00} \\
+		\encircle{D} \encircle{F} \encircle{.} & \tt{~~~~~~~~DF.} \\
+		& \tt{16EF xx} \\
+		\encircle{1} \encircle{6} \encircle{E} \encircle{E} & \tt{~~~~~~~~16EE} \\
+		\framebox[40pt][c]{SPACE} & \tt{16EE 00} \\
+		\encircle{F} \encircle{F} \encircle{.} & \tt{~~~~~~~~FF.} \\
+		& \tt{16EF xx} \\
 	\end{tabular}
 \end{table}
 
