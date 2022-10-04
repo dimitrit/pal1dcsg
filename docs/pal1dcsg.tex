@@ -1,6 +1,7 @@
 \documentclass[a4paper,11pt,twoside,openright]{report}
 \usepackage{standalone}
 \usepackage[lmargin=142pt,rmargin=95pt,tmargin=127pt,bmargin=123pt]{geometry}
+\usepackage[titleformat=italic,commabeforerest,citefull=first,oxford,super,dotafter=bibentry,see,bibformat=ibidem,human]{jurabib}
 \usepackage{csvsimple}
 \usepackage{graphicx}
 \usepackage[table]{xcolor}
@@ -13,20 +14,24 @@
 \usepackage{fdsymbol}
 \usepackage{awesomebox}
 \usepackage{titlesec}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 %\usepackage{inconsolata}
 \usepackage{tikz}
 \lstset{aboveskip=18pt,belowskip=18pt}
 \tcbset{colframe=blue!50!black,colback=blue!20}
 \hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,      
-    urlcolor=cyan,
+%   colorlinks=false,
+%    linkcolor=blue,
+%    filecolor=magenta,      
+%    urlcolor=cyan,
     pdftitle={PAL-1 Digital Complex Sound Generator},
     pdfpagemode=UseThumbs,
     pdfauthor={Plastic Objects Limited}
-    }
+}
+\renewcommand*{\biburlprefix}{\jblangle{}}
+\renewcommand*{\bibbudcsep}{~}
+\renewcommand\bibname{References}
+\AddTo\bibsenglish{\renewcommand*{\urldatecomment}{accessed }}
 \titleformat{\chapter}{\normalfont\huge}{\thechapter.}{20pt}{\huge\it}
 \makeatletter
 \newcommand{\code}{\texttt}
@@ -36,9 +41,9 @@
 \newcommand\mainmatter{
   \cleardoublepage
   \pagenumbering{arabic}}
-\newcommand\encircle[1]{%
+\newcommand\encircle[1]{
   \tikz[baseline=(X.base)] 
-    \node (X) [draw, shape=circle, inner sep=0] {\strut #1};}
+  \node (X) [draw, shape=circle, inner sep=0] {\strut #1};}
 \title{PAL-1 Digital Complex Sound Generator}
 \author{Plastic Objects Limited}
 \date{}
@@ -75,13 +80,9 @@ endorsement.
 \cleardoublepage
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}  
-The PAL-1 Digital Complex Sound Generator is an expansion module for the PAL-1
-system\footnote{Liu Ganning, ‘PAL-1 Microcomputer User Manual’, 2020,  
-\url{http://pal.aibs.ws/assets/PAL\textunderscore en.pdf} {[accessed 21 July 2022]}.}, based on the Texas 
-Instruments SN76489 Digital Complex Sound Generator (DCSG)\footnote{The EngineeringStaff of TEXAS 
-INSTRUMENTS Semiconductor Group, ‘SN76489AN’ (TEXAS INSTRUMENTS, N.D.)} and was inspired by a Ciarcia's
-Circuit Cellar project\footnote{Ciarcia, Steve, ‘Add Programmable Sound Effects to Your Computer’, 
-Byte, 7.7 (1982), 60–72}. 
+The PAL-1 Digital Complex Sound Generator is an expansion module for the PAL-1 system\cite{ganning1}, 
+based on the Texas Instruments SN76489 Digital Complex Sound Generator (DCSG)\cite{ti1} and was inspired 
+by a Ciarcia's Circuit Cellar project\cite[60-72]{ciarcia1}. 
 
 The SN76489 DCSG was used in a range of arcade games, game consoles, and home and business computers 
 from the late 1970s and throughout the 1980s. Notable systems using discrete SN76489 ICs include the 
@@ -339,7 +340,7 @@ Further examples may be found on Github at \url{https://github.com/dimitrit/pal1
 \section*{BASIC}
 
 The following 'tone test' example was taken from the 'Add programmable Sound Effects to Your 
-Computer' article in the July 1982 issue of BYTE magazine (pp. 60-72). Note that since the PAL-1 
+Computer' article in the July 1982 issue of BYTE magazine\cite[60-72]{ciarcia1}. Note that since the PAL-1 
 uses memory mapped i/o, all \code{OUT} statements have been replaced with \code{POKE} statements. 
 
 \lstinputlisting[basicstyle=\footnotesize\ttfamily,caption={Tone test},captionpos=b,
@@ -527,5 +528,11 @@ rate (see Table \ref{tab:shiftrates} for details on shift rates).
 \end{figure}
 
 \input{bom-v1_0A.tex}
+
+%\chapter{Bibliography}
+
+\bibliography{pal1}
+\bibliographystyle{jox}
+\addcontentsline{toc}{chapter}{References}
 
 \end{document}
